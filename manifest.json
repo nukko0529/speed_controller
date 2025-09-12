@@ -1,0 +1,9 @@
+{
+    "manifest_version": 3,
+    "name": "Speed Controller",
+    "version": "1.0",
+    "description": "CS50's final project",
+    "action": {
+        "default_popup": "popup.html"
+    }
+}
