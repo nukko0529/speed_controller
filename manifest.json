@@ -5,5 +5,11 @@
     "description": "CS50's final project",
     "action": {
         "default_popup": "popup.html"
-    }
+    },
+    "content_scripts": [{
+        "matches": ["https://*/*"],
+        "js": [
+            "content.js"
+        ]
+    }]
 }
