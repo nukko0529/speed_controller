@@ -9,6 +9,26 @@ function setPlaybackRate(rate) {
     } 
 }
 
+function updateSpeedDisplay(rate) {
+    let speedDisplay = document.getElementById("speed-display");
+
+    if(!speedDisplay) {
+        speedDisplay = document.createElement("div");
+        speedDisplay.id = "speed-display";
+        speedDisplay.style.position = "fixed";
+        speedDisplay.style.top = "10px";
+        speedDisplay.style.right = "10px";
+        speedDisplay.style.background = "grey";
+        speedDisplay.style.color = "white";
+        speedDisplay.style.padding = "4px 8px";
+        speedDisplay.style.borderRadius = "6px";
+        speedDisplay.style.zIndex = "30";
+        document.body.appendChild(speedDisplay);
+    }
+
+    speedDisplay.textContent = `${rate.toFixed(3)}x`;
+}
+
 
 const initialVideo = document.querySelector('video');
 
@@ -32,4 +52,5 @@ document.addEventListener('keydown', (event) => {
     }
 
     setPlaybackRate(currentRate);
+    updateSpeedDisplay(currentRate);
 });
