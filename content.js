@@ -2,11 +2,9 @@ let currentRate = 1.0;
 const MAX_RATE = 5.0;
 const MIN_RATE = 0.1;
 
-function setPlaybackRate(rate) {
-    const video = document.querySelector('video');
-    if (video) {
-        video.playbackRate = rate;
-    } 
+function setPlaybackRate(video) {
+    video.playbackRate = currentRate;
+    updateSpeedDisplay(currentRate);
 }
 
 function updateSpeedDisplay(rate) {
@@ -22,11 +20,11 @@ function updateSpeedDisplay(rate) {
         speedDisplay.style.color = "white";
         speedDisplay.style.padding = "4px 8px";
         speedDisplay.style.borderRadius = "6px";
-        speedDisplay.style.zIndex = "30";
+        speedDisplay.style.zIndex = "10000";
         document.body.appendChild(speedDisplay);
     }
 
-    speedDisplay.textContent = `${rate.toFixed(3)}x`;
+    speedDisplay.textContent = `${rate.toFixed(2)}x`;
 }
 
 
@@ -34,6 +32,7 @@ const initialVideo = document.querySelector('video');
 
 if (initialVideo) {
     //initialVideo.playbackRate = 2.0;
+    setPlaybackRate(initialVideo);
 }
 
 document.addEventListener('keydown', (event) => {
@@ -51,6 +50,6 @@ document.addEventListener('keydown', (event) => {
         return;
     }
 
-    setPlaybackRate(currentRate);
+    video.playbackRate = currentRate;
     updateSpeedDisplay(currentRate);
 });
