@@ -53,3 +53,24 @@ document.addEventListener('keydown', (event) => {
     video.playbackRate = currentRate;
     updateSpeedDisplay(currentRate);
 });
+
+// * 動画が切り替わったら速度表示をリセット
+// オブザーバの設定
+const config_ob = {
+    childList: true,
+    subtree: true
+};
+
+// コールバック関数の定義
+const callback = () => {
+    const video = document.querySelector('video');
+    if (video && video.playbackRate !== currentRate) {
+        currentRate = 1.0;
+        setPlaybackRate(video);
+    }
+};
+
+// MutationObserverのインスタンスを作成
+const observer = new MutationObserver(callback);
+// 監視を開始
+observer.observe(document.body, config_ob);
