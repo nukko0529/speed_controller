@@ -1,4 +1,5 @@
 let currentRate = 1.0;
+let step = 0.25;
 const MAX_RATE = 5.0;
 const MIN_RATE = 0.1;
 
@@ -28,6 +29,22 @@ function updateSpeedDisplay(rate) {
 }
 
 
+// * chrome.storage
+// 初期読み込み
+chrome.storage.sync.get("step", (data) => {
+    if (data.step) step = data.step;
+    console.log("Loaded step: ", step);
+});
+
+// 設定が変更されたら更新
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === "sync" && changes.step) {
+        step = changes.step.newValue;
+        console.log("Step updated: ", step);
+    }
+});
+
+// * メイン動作
 const initialVideo = document.querySelector('video');
 
 if (initialVideo) {
@@ -39,7 +56,7 @@ document.addEventListener('keydown', (event) => {
     const video = document.querySelector('video');
     if (!video) return;
 
-    const step = 0.1;
+    //const step = 0.1;
     if (event.key === 'd') {
         currentRate = Math.min(currentRate + step, MAX_RATE);
     } else if (event.key === 's') {

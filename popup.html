@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charaset="UTF-8">
+        <title>Speed Controller</title>
+    </head>
+    <body>
+        <h2>Step</h2>
+        <div class="current-value-display">
+            Current step: <span id="currentStepValue">0.20</span>
+        </div>
+        <input type="range" id="stepRange" min="0.05" max="1.0" step="0.05" value="0.8" list="markers" class="slider"/>
+        <div class="new-value-display">
+            New step: <span id="newStepValue">0.25</span>
+        </div>
+        <button id="applyBtn" class="btn">Apply</button>
+
+        <!-- スライダーの目盛用 -->
+        <datalist id="markers">
+            <option value="0.05"></option>
+            <option value="0.25"></option>
+            <option value="0.5"></option>
+            <option value="0.75"></option>
+            <option value="1.0"></option>
+        </datalist>
+
+        <script src="./popup.js"></script>
+    </body>
+</html>
