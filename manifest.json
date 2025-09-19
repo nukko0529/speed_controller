@@ -3,6 +3,7 @@
     "name": "Speed Controller",
     "version": "1.0",
     "description": "CS50's final project",
+    "permissions": ["storage"],
     "action": {
         "default_popup": "popup.html"
     },
