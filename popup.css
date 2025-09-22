@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    width: 360px;
+}
+
+.controls {
+    flex: 2;
+}
+
+.otter-display {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
