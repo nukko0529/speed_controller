@@ -8,9 +8,8 @@ const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
 let frame = 0;
-let frameCount = 4;
+//let frameCount = 4;
 let sprite = new Image();
-sprite.src = "img/otter-sleep.png";
 
 
 // 初期読み込み
@@ -42,7 +41,43 @@ range.addEventListener("input", () => {
     rangeDisplay.textContent = range.value;
 });
 
-function drawFrame() {
+// * アニメーションの表示
+// content.jsから再生速度を取得
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, { type: "GET_RATE" }, (response) => {
+        if (response && response.rate) {
+            updateOtterAnimation(response.rate);
+        }
+    });
+});
+
+function updateOtterAnimation(rate) {
+    if (rate < 1.0) {
+        showOtter("sleep");
+    } else if (rate === 1.0) {
+        showOtter("walk");
+    } else if (rate < 2.0) {
+        showOtter("run");
+    } else {
+        showOtter("swim");
+    }
+}
+
+function showOtter(mode) {
+    if (mode === "sleep") {
+        frameCount = 4;
+        sprite.src = "img/otter-sleep.png";
+    } else if (mode === "walk") {
+        frameCount = 8;
+        sprite.src = "img/otter-walk.png";
+    } else if (mode === "run") {
+        frameCount = 8;
+        sprite.src = "img/otter-walk.png";
+    } else if (mode === "swim") {
+        frameCount = 8;
+        sprite.src = "img/otter-walk.png";
+    }
+
     let spriteWidth = sprite.width / frameCount;
     let spriteHeight = sprite.height;
 
@@ -56,4 +91,4 @@ function drawFrame() {
     frame = (frame + 1) % frameCount;
 }
 
-setInterval(drawFrame, 300);
+setInterval(showOtter, 300);

@@ -91,3 +91,16 @@ const callback = () => {
 const observer = new MutationObserver(callback);
 // 監視を開始
 observer.observe(document.body, config_ob);
+
+// * popup.jsに再生速度の情報を送る
+function getPlaybackRate() {
+    const video = document.querySelector("video");
+    return video ? video.playbackRate : 1.0;
+}
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.type === "GET_RATE") {
+        console.log("send response");
+        sendResponse({ rate: getPlaybackRate() });
+    }
+});
