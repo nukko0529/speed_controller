@@ -2,14 +2,19 @@ const range = document.getElementById("step-range");
 const rangeDisplay = document.getElementById("new-step-value");
 const applyBtn = document.getElementById("apply-btn");
 
+let step = 0;
 
-const canvas = document.getElementById("otter-canvas");
-const ctx = canvas.getContext("2d");
+const canvasOtter = document.getElementById("otter-canvas");
+const displayBg = document.getElementById("otter-display");
+const ctx = canvasOtter.getContext("2d");
+//const bgx = canvasBg.getContext("2d");
 ctx.imageSmoothingEnabled = false;
+//bgx.imageSmoothingEnabled = false;
 
 let frame = 0;
-//let frameCount = 4;
-let sprite = new Image();
+let frameCount = 4;
+//let spriteBg = new Image();
+let spriteOtter = new Image();
 
 
 // 初期読み込み
@@ -48,6 +53,11 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (response && response.rate) {
             updateOtterAnimation(response.rate);
         }
+        if (chrome.runtime.lastError) {
+            console.error("sendMessage error: ", chrome.runtime.lastError.message);
+            return;
+        }
+        console.log("response: ", response);
     });
 });
 
@@ -66,26 +76,30 @@ function updateOtterAnimation(rate) {
 function showOtter(mode) {
     if (mode === "sleep") {
         frameCount = 4;
-        sprite.src = "img/otter-sleep.png";
+        displayBg.className = "otter-display";
+        spriteOtter.src = "img/otter-sleep.png";
     } else if (mode === "walk") {
         frameCount = 8;
-        sprite.src = "img/otter-walk.png";
+        displayBg.className = "otter-display bg-walk";
+        spriteOtter.src = "img/otter-walk.png";
     } else if (mode === "run") {
         frameCount = 8;
-        sprite.src = "img/otter-walk.png";
+        displayBg.className = "otter-display bg-run";
+        spriteOtter.src = "img/otter-walk.png";
     } else if (mode === "swim") {
         frameCount = 8;
-        sprite.src = "img/otter-walk.png";
+        displayBg.className = "otter-display bg-swim";
+        spriteOtter.src = "img/otter-walk.png";
     }
 
-    let spriteWidth = sprite.width / frameCount;
-    let spriteHeight = sprite.height;
+    let spriteWidth = spriteOtter.width / frameCount;
+    let spriteHeight = spriteOtter.height;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasOtter.width, canvasOtter.height);
     ctx.drawImage(
-        sprite,
+        spriteOtter,
         frame * spriteWidth, 0, spriteWidth, spriteHeight,
-        0, 0, canvas.width, canvas.height
+        0, 0, canvasOtter.width, canvasOtter.height
     );
 
     frame = (frame + 1) % frameCount;
