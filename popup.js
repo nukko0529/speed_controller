@@ -75,7 +75,7 @@ function updateOtterAnimation(rate) {
 
 function showOtter(mode) {
     if (mode === "sleep") {
-        frameCount = 4;
+        frameCount = 8;
         displayBg.className = "otter-display";
         spriteOtter.src = "img/otter-sleep.png";
     } else if (mode === "walk") {
