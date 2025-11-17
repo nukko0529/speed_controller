@@ -49,6 +49,7 @@ const initialVideo = document.querySelector('video');
 
 if (initialVideo) {
     //initialVideo.playbackRate = 2.0;
+    console.log("initial playbackrate: ", currentRate);
     setPlaybackRate(initialVideo);
 }
 
@@ -83,6 +84,7 @@ const callback = () => {
     const video = document.querySelector('video');
     if (video && video.playbackRate !== currentRate) {
         currentRate = 1.0;
+        console.log("CALLBACK");
         setPlaybackRate(video);
     }
 };
@@ -91,3 +93,17 @@ const callback = () => {
 const observer = new MutationObserver(callback);
 // 監視を開始
 observer.observe(document.body, config_ob);
+
+// * popup.jsに再生速度の情報を送る
+function getPlaybackRate() {
+    const video = document.querySelector("video");
+    console.log("playback rate is gotten");
+    return video ? video.playbackRate : 1.0;
+}
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.type === "GET_RATE") {
+        console.log("send response");
+        sendResponse({ rate: getPlaybackRate() });
+    }
+});

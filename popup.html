@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charaset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="./popup.css" />
         <title>Speed Controller</title>
     </head>
     <body>
@@ -14,6 +15,10 @@
             New step: <span id="new-step-value">0.25</span>
         </div>
         <button id="apply-btn" class="btn">Apply</button>
+
+        <div id="otter-display" class="otter-display">
+            <canvas id="otter-canvas" width="128" height="64"></canvas>
+        </div>
 
         <!-- スライダーの目盛用 -->
         <datalist id="markers">
