@@ -3,6 +3,8 @@ const rangeDisplay = document.getElementById("new-step-value");
 const applyBtn = document.getElementById("apply-btn");
 
 let step = 0;
+let interval = 300;
+let animationTimer = null;
 
 const canvasOtter = document.getElementById("otter-canvas");
 const displayBg = document.getElementById("otter-display");
@@ -54,7 +56,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             updateOtterAnimation(response.rate);
         }
         if (chrome.runtime.lastError) {
-            console.error("sendMessage error: ", chrome.runtime.lastError.message);
+            //console.error("sendMessage error: ", chrome.runtime.lastError.message);
             return;
         }
         console.log("response: ", response);
@@ -76,33 +78,43 @@ function updateOtterAnimation(rate) {
 function showOtter(mode) {
     if (mode === "sleep") {
         frameCount = 8;
+        interval = 300;
         displayBg.className = "otter-display";
         spriteOtter.src = "img/otter-sleep.png";
     } else if (mode === "walk") {
         frameCount = 8;
+        interval = 300;
         displayBg.className = "otter-display bg-walk";
         spriteOtter.src = "img/otter-walk.png";
     } else if (mode === "run") {
         frameCount = 8;
+        interval = 100;
         displayBg.className = "otter-display bg-run";
-        spriteOtter.src = "img/otter-walk.png";
+        spriteOtter.src = "img/otter-run.png";
     } else if (mode === "swim") {
-        frameCount = 8;
+        frameCount = 16;
+        interval = 200;
         displayBg.className = "otter-display bg-swim";
-        spriteOtter.src = "img/otter-walk.png";
+        spriteOtter.src = "img/otter-swim.png";
     }
 
-    let spriteWidth = spriteOtter.width / frameCount;
-    let spriteHeight = spriteOtter.height;
-
-    ctx.clearRect(0, 0, canvasOtter.width, canvasOtter.height);
-    ctx.drawImage(
-        spriteOtter,
-        frame * spriteWidth, 0, spriteWidth, spriteHeight,
-        0, 0, canvasOtter.width, canvasOtter.height
-    );
-
-    frame = (frame + 1) % frameCount;
+    restartAnimation();
 }
 
-setInterval(showOtter, 300);
+function restartAnimation() {
+    if (animationTimer) clearInterval(animationTimer);
+
+    animationTimer = setInterval(() => {
+        let spriteWidth = spriteOtter.width / frameCount;
+        let spriteHeight = spriteOtter.height;
+
+        ctx.clearRect(0, 0, canvasOtter.width, canvasOtter.height);
+        ctx.drawImage(
+            spriteOtter,
+            frame * spriteWidth, 0, spriteWidth, spriteHeight,
+            0, 0, canvasOtter.width, canvasOtter.height
+        );
+
+        frame = (frame + 1) % frameCount;
+    }, interval);
+}
