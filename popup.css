@@ -9,7 +9,7 @@
 }
 
 .bg-swim {
-    background: url("img/back-walk.png") repeat-x;
+    background: url("img/back-swim.png") repeat-x;
     animation: scrollBgWalk 2s linear infinite;
 }
 
