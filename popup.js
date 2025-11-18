@@ -63,6 +63,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     });
 });
 
+// 再生速度に応じてアニメーションを変更
 function updateOtterAnimation(rate) {
     if (rate < 1.0) {
         showOtter("sleep");
@@ -75,6 +76,7 @@ function updateOtterAnimation(rate) {
     }
 }
 
+// 表示するアニメーションの設定
 function showOtter(mode) {
     if (mode === "sleep") {
         frameCount = 8;
@@ -101,6 +103,7 @@ function showOtter(mode) {
     restartAnimation();
 }
 
+// フレーム毎にアニメーションの再読み込み
 function restartAnimation() {
     if (animationTimer) clearInterval(animationTimer);
 

@@ -1,21 +1,21 @@
 .bg-walk {
     background: url("img/back-walk.png") repeat-x;
-    animation: scrollBgWalk 5s linear infinite;
+    animation: scrollBgRoop 10s linear infinite;
 }
 
 .bg-run {
     background: url("img/back-walk.png") repeat-x;
-    animation: scrollBgWalk 2s linear infinite;
+    animation: scrollBgRoop 5s linear infinite;
 }
 
 .bg-swim {
     background: url("img/back-swim.png") repeat-x;
-    animation: scrollBgWalk 2s linear infinite;
+    animation: scrollBgRoop 10s linear infinite;
 }
 
-@keyframes scrollBgWalk {
-    from { background-position: 0 0; }
-    to   { background-position: -128px 0; }
+@keyframes scrollBgRoop {
+    0% { background-position: 0 0; }
+    100%   { background-position: -200% 0; }
 }
 
 .container {
@@ -36,6 +36,8 @@
     width: 128px;
     height: 64px;
     overflow: hidden;
+    background-repeat: repeat-x;
+    background-size: auto 100%;
 }
 
 #bg-canvas, #otter-canvas {
