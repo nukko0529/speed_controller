@@ -45,7 +45,8 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 });
 
 // * メイン動作
-const initialVideo = document.querySelector('video');
+//const initialVideo = document.querySelector('video');
+let initialVideo = document.querySelector("video");
 
 if (initialVideo) {
     //initialVideo.playbackRate = 2.0;
@@ -73,7 +74,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 // * 動画が切り替わったら速度表示をリセット
-// オブザーバの設定
+/*// オブザーバの設定
 const config_ob = {
     childList: true,
     subtree: true
@@ -92,7 +93,28 @@ const callback = () => {
 // MutationObserverのインスタンスを作成
 const observer = new MutationObserver(callback);
 // 監視を開始
-observer.observe(document.body, config_ob);
+observer.observe(document.body, config_ob);*/
+
+function observeVideoAppearance() {
+    const observer = new MutationObserver(() => {
+        const newVideo = document.querySelector("video");
+
+        if (newVideo && newVideo !== initialVideo) {
+            console.log("Video changed!");
+            initialVideo = newVideo;
+
+            // 速度を再適用
+            setPlaybackRate(newVideo);
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+observeVideoAppearance();
 
 // * popup.jsに再生速度の情報を送る
 function getPlaybackRate() {
@@ -107,3 +129,20 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ rate: getPlaybackRate() });
     }
 });
+
+// * Shadow DOM 内の videoを探す
+function findVideo(root = document) {
+    const videos = root.querySelectorAll("video");
+    if (videos.length) return videos[0];
+
+    const shadows = [...root.querySelectorAll("*")]
+        .map(el => el.shadowRoot)
+        .filter(Boolean);
+    
+    for (const shadow of shadows) {
+        const v = findVideo(shadow);
+        if (v) return v;
+    }
+
+    return null;
+}
