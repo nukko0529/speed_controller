@@ -81,6 +81,7 @@ waitForVideo();
 
 // ショートカットキー
 document.addEventListener('keydown', (event) => {
+    const video = findRealVideo();
     if (!video) return;
 
     if (event.key === 'd') {
@@ -89,6 +90,17 @@ document.addEventListener('keydown', (event) => {
         currentRate = Math.max(currentRate - step, MIN_RATE);
     } else if (event.key === 'r') {
         currentRate = 1.0;
+    } else if (event.key === 'v'){
+        // videoタグを再スキャン
+        const vid = findRealVideo();
+        if (vid) {
+            video = vid;
+            setPlaybackRate(video);
+            updateSpeedDisplay(currentRate);
+            console.log("Video manually refreshed", video);
+        } else {
+            console.log("video not found");
+        }
     } else {
         return;
     }
@@ -96,6 +108,26 @@ document.addEventListener('keydown', (event) => {
     video.playbackRate = currentRate;
     updateSpeedDisplay(currentRate);
 });
+
+function findRealVideo() {
+    const videos = Array.from(document.querySelectorAll("video"));
+
+    let real = videos.find(v =>
+        v.readyState === 4 &&
+        v.videoWidth > 0 &&
+        v.videoHeight > 0
+    );
+
+    if (real) return real;
+
+    real = videos.find(v => v.readyState >= 2);
+    if (real) return real;
+
+    real = videos.find(v => v.src.startsWith("blob:"));
+    if (real) return real;
+
+    return videos[0];
+}
 
 // * popup.jsに再生速度の情報を送る
 function getPlaybackRate() {
