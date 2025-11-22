@@ -45,20 +45,44 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 });
 
 // * メイン動作
-//const initialVideo = document.querySelector('video');
-let initialVideo = document.querySelector("video");
+let video = null;
 
-if (initialVideo) {
-    //initialVideo.playbackRate = 2.0;
-    console.log("initial playbackrate: ", currentRate);
-    setPlaybackRate(initialVideo);
+function waitForVideo() {
+    const found = document.querySelector("video");
+
+    if(!found) {
+        setTimeout(waitForVideo, 300);
+        return;
+    }
+
+    if (found !== video) {
+        video = found;
+        console.log("video initialized or changed", video);
+
+        hookVideo(video);
+    }
+
+    setTimeout(waitForVideo, 300);
 }
 
+function hookVideo(video) {
+    setPlaybackRate(video);
+
+    const observer = new MutationObserver(() => {
+        if (video.playbackRate !== currentRate) {
+            video.playbackRate = currentRate;
+        }
+    });
+
+    observer.observe(video, {attributes: true, attributeFilter: ["src"]});
+}
+
+waitForVideo();
+
+// ショートカットキー
 document.addEventListener('keydown', (event) => {
-    const video = document.querySelector('video');
     if (!video) return;
 
-    //const step = 0.1;
     if (event.key === 'd') {
         currentRate = Math.min(currentRate + step, MAX_RATE);
     } else if (event.key === 's') {
@@ -72,49 +96,6 @@ document.addEventListener('keydown', (event) => {
     video.playbackRate = currentRate;
     updateSpeedDisplay(currentRate);
 });
-
-// * 動画が切り替わったら速度表示をリセット
-/*// オブザーバの設定
-const config_ob = {
-    childList: true,
-    subtree: true
-};
-
-// コールバック関数の定義
-const callback = () => {
-    const video = document.querySelector('video');
-    if (video && video.playbackRate !== currentRate) {
-        currentRate = 1.0;
-        console.log("CALLBACK");
-        setPlaybackRate(video);
-    }
-};
-
-// MutationObserverのインスタンスを作成
-const observer = new MutationObserver(callback);
-// 監視を開始
-observer.observe(document.body, config_ob);*/
-
-function observeVideoAppearance() {
-    const observer = new MutationObserver(() => {
-        const newVideo = document.querySelector("video");
-
-        if (newVideo && newVideo !== initialVideo) {
-            console.log("Video changed!");
-            initialVideo = newVideo;
-
-            // 速度を再適用
-            setPlaybackRate(newVideo);
-        }
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-}
-
-observeVideoAppearance();
 
 // * popup.jsに再生速度の情報を送る
 function getPlaybackRate() {
