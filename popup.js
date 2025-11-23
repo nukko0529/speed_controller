@@ -48,6 +48,15 @@ range.addEventListener("input", () => {
     rangeDisplay.textContent = range.value;
 });
 
+// sliderの表示設定
+const slider = document.getElementById("step-range");
+function update() {
+    const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = `linear-gradient(to right, #c7995d ${val}%, #ddd ${val}%)`;
+}
+slider.addEventListener("input", update);
+update();
+
 // * アニメーションの表示
 // content.jsから再生速度を取得
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
