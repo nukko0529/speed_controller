@@ -5,12 +5,12 @@
     "description": "CS50's final project",
     "permissions": ["activeTab", "scripting", "storage"],
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "src/popup.html"
     },
     "content_scripts": [{
         "matches": ["https://*/*"],
         "js": [
-            "content.js"
+            "src/content.js"
         ]
     }]
 }
