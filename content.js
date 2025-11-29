@@ -126,7 +126,8 @@ function findRealVideo() {
     real = videos.find(v => v.src.startsWith("blob:"));
     if (real) return real;
 
-    return videos[0];
+    //return videos[0];
+    return real;
 }
 
 // * popup.jsに再生速度の情報を送る
