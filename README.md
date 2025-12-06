@@ -1,4 +1,4 @@
-# SpeedController Extension
+# SpeedContrOtter Extension
 A Simple Chrome extension for controlling playback speed on YouTube, Prime Video, and others.
 
 ## Features
@@ -6,7 +6,7 @@ A Simple Chrome extension for controlling playback speed on YouTube, Prime Video
 - On-screen speed indicator
 - Supports YouTube + Prime Video and more
 - Auto-detect video change and re-apply speed
-- Otter run on the popup
+- **Otter run on the popup!**
 
 ## How to install
 You can install this extension in two ways: **Download ZIP** or **Clone**.
@@ -64,4 +64,5 @@ See the [LICENSE](LICENSE) file for details.
 
 ## Author
 Created by **nukkko**
+
 Feel free to open issues or suggestions.
